@@ -8,8 +8,13 @@ read -s password
 echo
 
 # nix-darwin
-nix run --extra-experimental-features "nix-command flakes" \
-	nix-darwin -- switch --flake .#m1
+build_flake () {
+  nix run --extra-experimental-features "nix-command flakes" \
+	  nix-darwin -- switch --flake .#m1
+}
+
+# Run twice to ensure
+build_flake && build_flake
 
 # yabai: enable non-Apple-signed arm64e binaries for Apple Silicon
 echo $password | sudo -S nvram boot-args=-arm64e_preview_abi
